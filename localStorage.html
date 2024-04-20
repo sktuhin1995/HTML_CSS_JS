@@ -1,0 +1,178 @@
+<DOCTYPE html>
+<html>
+    <head>
+        <style>
+            header{
+                display: block;
+                background-color: White;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 100;
+            }
+
+            header.shadow{
+                background-color: var(--bg-color);
+                box-shadow: 4px 4px 4px rgb(15 54 55 / 10%);
+                transition: 1s ease;
+            }
+
+            header.shadow #search-icon{
+                color: var(--text-color);
+            }
+
+            *{
+                list-style: none;
+                text-decoration: none;
+            }
+
+            :root{
+                --main-color: Teal;
+                --sec-color: Teal;
+                --text-color: black;
+                --bg-color: White;
+            }
+
+            .container{
+                max-width: 1068px;
+                margin: auto;
+                width: 100%;
+            }
+
+            section{
+                padding: 4rem 0 3rem;
+            }
+
+            .nav{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 35px;
+            }
+
+            #menu-icon{
+                font-size: 24px;
+                cursor: pointer;
+                color: var(--text-color);
+                display: none;
+            }
+
+            .logo{
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--text-color);
+            }
+
+
+            .logo span{
+                color: var(--main-color);
+            }
+
+            .navbar{
+                display: flex;
+                column-gap: 2rem;
+            }
+
+            .navbar a{
+                color: var(--text-color);
+                font-size: 1rem;
+                text-transform: uppercase;
+                font-weight: 500;
+            }
+
+            .navbar a:hover,
+            .navbar .active{
+                color: var(--main-color);
+                border-bottom: 3px solid var(--main-color);
+            }
+
+            body {
+                background-image: url(Image/n2.jpg);
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: 100% 100%;
+                margin-top: 100px;
+            }
+
+            .localStorage {
+                width: 600px;
+                height: 300px;
+                padding: 10px;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;                             
+            }
+
+            h1{
+                text-align: center;
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <div class="nav container">
+                <i class='bx bx-menu' id="menu-icon"></i>
+                <a href="#" class="logo">Car<span>Sales</span></a>
+                <ul class="navbar">
+                    <li> <a href="index.html">Home Page</a></li>
+                    <li> <a href="indexedDB.html">IndexedDB</a></li>
+                    <li> <a href="#localStorage.html" class="active">Local Storage</a></li>
+                    <li> <a href="sessionStorage.html">Session Storage</a></li>
+                </ul>
+
+            </div>
+        </header>
+
+        <section>
+            <article class="localStorage">
+                <div>
+                    <h1><font face="arial black" size="6">Local Storage</font></h1>
+                    <p>Type your Cars color.</p>
+                    <input type="text" placeholder="Cars color" id="name">
+                    <input type="button" onclick="save()" value="Save" />
+                    <label id="Info"></label>
+                    <br>
+                    <p>Your favorite color is:</p>
+                    <input type="text" id="theColor">
+                    <input type="button" onclick="load()" value="Show" />
+                    <br>
+                    <br>
+                    <input type="button" onclick="removeColor()" value="Remove" />
+                </div>
+            </article>
+        </section>
+
+        <script>
+            function save() {
+                var color = document.getElementById('name').value;
+                var info = document.getElementById('Info');
+                if (color.length < 1) {
+                    info.innerHTML = "Please Write a Cars color!";
+                    info.style.color = ("red")
+                }
+                else {
+                    localStorage.setItem('Savedcolor', color);
+                    info.innerHTML = (("Your Cars color, ") + color + (" has been Saved"));
+                    info.style.color = ("Black")
+                };
+            }
+            function load() {
+                var yourcolor = localStorage.getItem('Savedcolor');
+                if (yourcolor) {
+                    document.getElementById('theColor').value = yourcolor;
+                }
+            }
+            function removeColor() {
+                var info = document.getElementById('Info');
+                var yourcolor = localStorage.getItem('Savedcolor');
+                document.getElementById('theColor').value = '';
+                info.innerHTML = (("Your Cars color, ") + yourcolor + (" has been Removed"));
+                info.style.color = ("Red")
+                localStorage.removeItem('Savedcolor');
+            }
+        </script>
+    </body>
+</html>

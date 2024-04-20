@@ -1,0 +1,174 @@
+<DOCTYPE html>
+<html>
+    <head>
+        <style>
+            header{
+                display: block;
+                background-color: White;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 100;
+            }
+
+            header.shadow{
+                background-color: var(--bg-color);
+                box-shadow: 4px 4px 4px rgb(15 54 55 / 10%);
+                transition: 1s ease;
+            }
+
+            header.shadow #search-icon{
+                color: var(--text-color);
+            }
+
+            *{
+                list-style: none;
+                text-decoration: none;
+            }
+
+            :root{
+                --main-color: Teal;
+                --sec-color: Teal;
+                --text-color: black;
+            }
+
+            .container{
+                max-width: 1068px;
+                margin: auto;
+                width: 100%;
+            }
+
+            section{
+                padding: 4rem 0 3rem;
+            }
+
+            .nav{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 35px;
+            }
+
+            #menu-icon{
+                font-size: 24px;
+                cursor: pointer;
+                color: var(--text-color);
+                display: none;
+            }
+
+            .logo{
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--text-color);
+            }
+
+
+            .logo span{
+                color: var(--main-color);
+            }
+
+            .navbar{
+                display: flex;
+                column-gap: 2rem;
+            }
+
+            .navbar a{
+                color: var(--text-color);
+                font-size: 1rem;
+                text-transform: uppercase;
+                font-weight: 500;
+            }
+
+            .navbar a:hover,
+            .navbar .active{
+                color: var(--main-color);
+                border-bottom: 3px solid var(--main-color);
+            }
+
+            body {
+                background-image: url(Image/n3.jpg);
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: 100% 100%;
+                margin-top: 100px;
+            }
+
+            .sessionStorage {
+                width: 600px;
+                height: 300px;
+                padding: 10px;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+            }
+
+            h1{
+                text-align: center;
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <div class="nav container">
+                <i class='bx bx-menu' id="menu-icon"></i>
+                <a href="#" class="logo">Car<span>Sales</span></a>
+                <ul class="navbar">
+                    <li> <a href="index.html">Home Page</a></li>
+                    <li> <a href="indexedDB.html">IndexedDB</a></li>
+                    <li> <a href="localStorage.html">Local Storage</a></li>
+                    <li> <a href="#sessionStorage.html" class="active">Session Storage</a></li>
+                </ul>
+
+            </div>
+        </header>
+
+        <section>
+            <article class="sessionStorage">
+                <div>
+                    <h1><font face="arial black" size="6">Session Storage</font></h1>
+                    <form action="">
+                        <p>Car Model: <br /><input type="text" id="key" /></p>
+                        <p>Price: <br /><input type="text" id="value"></p>
+                        <p><input type="submit" id="button" value="submit" /></p>
+                        <div id="display"></div>
+                    </form>
+                    <a href="javascript:clear()">Clear</a> <br />
+                </div>
+            </article>
+        </section>
+
+        <script>
+            function doFirst() {
+                var button = document.getElementById("button");
+                button.addEventListener("click", save, false);
+                display();
+            }
+
+            function save() {
+                var key = document.getElementById("key").value;
+                var value = document.getElementById("value").value;
+                sessionStorage.setItem(key, value);
+                display();
+                key.value = "";
+                value.value = "";
+            }
+            function display() {
+                var display = document.getElementById("display");
+                display.innerHTML = "";
+                for (var i = 0; sessionStorage.length > i; i++) {
+                    var a = sessionStorage.key(i);
+                    var b = sessionStorage.getItem(a);
+                    display.innerHTML += a + " - " + b + "<br/>";
+                }
+            }
+            function clear() {
+                sessionStorage.clear();
+                location.reload();
+            }
+            window.addEventListener("load", doFirst, false);
+        </script>
+    </body>
+</html>

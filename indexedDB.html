@@ -1,0 +1,281 @@
+<DOCTYPE html>
+<html>
+    <head>   
+        <script src="indexedDB.js"></script>
+        <style>
+            header {
+                display: block;
+                background-color: White;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 100;
+            }
+            header.shadow{
+                background-color: var(--bg-color);
+                box-shadow: 4px 4px 4px rgb(15 54 55 / 10%);
+                transition: 1s ease;
+            }
+
+            header.shadow #search-icon{
+                color: var(--text-color);
+            }
+
+            *{
+                list-style: none;
+                text-decoration: none;
+            }
+
+            :root {
+                --main-color: Teal;
+                --sec-color: Teal;
+                --text-color: black;
+                --bg-color: White;
+            }
+
+            .container {
+                max-width: 1068px;
+                margin: auto;
+                width: 100%;
+            }
+
+            section {
+                padding: 4rem 0 3rem;
+            }
+
+            .nav {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 35px;
+            }
+
+            #menu-icon {
+                font-size: 24px;
+                cursor: pointer;
+                color: var(--text-color);
+                display: none;
+            }
+
+            .logo {
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--text-color);
+            }
+
+
+            .logo span{
+                color: var(--main-color);
+            }
+
+            .navbar{
+                display: flex;
+                column-gap: 2rem;
+            }
+
+            .navbar a{
+                color: var(--text-color);
+                font-size: 1rem;
+                text-transform: uppercase;
+                font-weight: 500;
+            }
+
+            .navbar a:hover,
+            .navbar .active{
+                color: var(--main-color);
+                border-bottom: 3px solid var(--main-color);
+            }
+
+            body {
+                background-image: url(Image/n1.jpg);
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: 100% 100%;
+                margin-top: 100px
+            }
+            .indexdb {
+                height: 100%;
+                width: 100%;
+                background-size: cover;
+                background-position: center;
+                background-image: url("fire.jpg");
+            }
+
+            h1{
+                text-align: center;
+                text-decoration: underline;
+            }       
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="nav container">
+                <i class='bx bx-menu' id="menu-icon"></i>
+                <a href="#" class="logo">Car<span>Sales</span></a>
+                <ul class="navbar">
+                    <li> <a href="index.html">Home Page</a></li>
+                    <li> <a href="#indexedDB.html" class="active">IndexedDB</a></li>
+                    <li> <a href="localStorage.html">Local Storage</a></li>
+                    <li> <a href="sessionStorage.html">Session Storage</a></li>
+                </ul>
+
+            </div>
+        </header>
+
+        <section>
+            <h1><font face="arial black" size="6">IndexedDB</font></h1><br />
+       <div class="container">
+                    <div id="side" style="text-align: center;color: black;">
+                        <input type="text" id="Cname" placeholder="Customer Name" />
+                        <input type="text" id="address" placeholder="Address" />
+                        <input type="text" id="email" placeholder="Email" />
+                        <input type="text" id="phone" placeholder="Phone" /><br /><br />
+                        <input type="button" id="add" value="Insert" />
+                    </div>
+                    <br><br />
+                    <table border="1" cellspacing="1" cellpadding="1" id="tbl" style="overflow-y: scroll; color: white;" align="center">
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody style="column-width: 20%; color: black;"></tbody>
+                    </table>
+                </div>
+</section>
+        <script src="jquery-3.2.1.min.js"></script>
+        <script>
+            var indexedDB = window.indexedDB || window.mozIndexedDB ||
+                window.webkitIndexedDB || window.msIndexedDB;
+            var db;
+            var currentEdit = null;
+            $(document).ready(function () {
+                var openReq = indexedDB.open("DetailsDB", 1);
+                openReq.onupgradeneeded = function (e) {
+                    db = e.target.result;
+                    var store = db.createObjectStore("Details", {
+                        keyPath: "id",
+                        autoIncrement: true
+                    });
+                    console.log(store);
+                }
+                openReq.onsuccess = function (e) {
+                    db = e.target.result;
+                    console.log(db);
+                    readAll();
+                    $("#add").click(function () {
+                        if ($("#Cname").val() != "" && $("#address").val() != "" &&
+                            $("#email").val() != "" && $("#phone").val() != "") {
+                            var tx = db.transaction(["Details"], "readwrite");
+                            if (currentEdit == null) {
+                                var req = tx.objectStore("Details").add({
+                                    CompanyName: $("#Cname").val(),
+                                    Address: $("#address").val(),
+                                    Email: $("#email").val(),
+                                    Phone: $("#phone").val()
+                                });
+                                req.onsuccess = function (e) {
+                                    console.log("Added data.....");
+                                    alert("Data has been added succesfully")
+                                    readAll();
+                                }
+                                $("#Cname").val("");
+                                $("#address").val("");
+                                $("#email").val("");
+                                $("#phone").val("");
+                                $("#Cname").focus();
+                            }
+                            else {
+                                var req = tx.objectStore("Details").put({
+                                    FirstName: $("#Cname").val(),
+                                    LastName: $("#address").val(),
+                                    Email: $("#email").val(),
+                                    Phone: $("#phone").val(),
+                                    id: currentEdit.id
+                                });
+                                req.onsuccess = function (e) {
+                                    console.log("Added data.....");
+                                    alert("Data has been Updated")
+                                    readAll();
+                                }
+                                $("#Cname").val("");
+                                $("#address").val("");
+                                $("#email").val("");
+                                $("#phone").val("");
+                                $("#Cname").focus();
+                            }
+                            $("#add").val("Add New"); currentEdit = null;
+                        }
+                        else {
+                            alert("All Fields must be filled");
+                        }
+                    })
+                }
+            })
+            function readAll() {
+                $("#tbl tbody").empty();
+                var tx = db.transaction(["Details"], "readonly");
+                var req = tx.objectStore("Details").openCursor();
+                req.onsuccess = function (e) {
+                    var cursor = e.target.result;
+                    if (!cursor) return;
+                    $("#tbl tbody").append(
+                        "<tr>" +
+                        "<td>" + cursor.value.CompanyName + "</td>" +
+                        "<td>" + cursor.value.Address + "</td>" +
+                        "<td>" + cursor.value.Email + "</td>" +
+                        "<td>" + cursor.value.Phone + "</td>" +
+                        "<td>" + "<button class='edit' data-key='" + cursor.key +
+                        "'>Edit</button>|<button class='del' data-key='" + cursor.key +
+                        "'>Delete</button></td>"
+                        + "</tr>"
+                    )
+                    cursor.continue();
+                }
+                req.onerror = function (err) {
+                    console.log(err);
+                }
+                tx.oncomplete = function () {
+                    $(".del").click(function () {
+                        var id = $(this).attr('data-key');
+                        var row = $(this).parent().parent();
+                        var tx = db.transaction(["Details"], "readwrite");
+                        var store = tx.objectStore("Details");
+                        var req = store.delete(parseInt(id));
+                        req.onsuccess = function (e) {
+                            console.log("Data deleted succesfully....");
+                            alert("Data has been deleted succesfully")
+                            row.remove();
+                        }
+                        req.onerror = function (err) {
+                            console.log(err);
+                        }
+                    });
+                    $(".edit").click(function (evt) {
+                        evt.preventDefault();
+                        fillForm($(this).attr('data-key'));
+                    })
+                }
+            }
+            function fillForm(id) {
+                var t = db.transaction(["Details"], "readwrite");
+                var objStore = t.objectStore("Details");
+                var request = objStore.get(parseInt(id));
+                request.onsuccess = function (evt) {
+                    currentEdit = request.result;
+                    console.log(currentEdit);
+                    $("#Cname").val(currentEdit.CompanyName);
+                    $("#address").val(currentEdit.Address);
+                    $("#email").val(currentEdit.Email);
+                    $("#phone").val(currentEdit.Phone);
+                    $("#add").val("Update");
+                }
+            }
+        </script>
+    </body>
+</html>

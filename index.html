@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Offline WebApplication</title>
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <header>
+            <div class="nav container">
+                <i class='bx bx-menu' id="menu-icon"></i>
+                <a href="#" class="logo">Car<span>Sales</span></a>
+                <ul class="navbar">
+                    <li> <a href="#home" class="active">Home</a></li>
+                    <li> <a href="#cars">Search Car</a></li>
+                    <li> <a href="#buy">Buy Now</a></li>
+                    <li> <a href="indexedDB.html">IndexedDB</a></li>
+                    <li> <a href="localStorage.html">Local Storage</a></li>
+                    <li> <a href="sessionStorage.html">Session Storage</a></li>
+                </ul>
+                <i class='bx bx-shopping-bag' id="cart-icon">
+                    <span class="cart-number">0</span>
+                </i>
+
+                <div class="cart">
+                    <h2 class="cart-title">Your Cart</h2>
+                    <div class="cart-content">
+
+
+                    </div>
+
+                    <div class="total">
+                        <div class="total-title">Total</div>
+                        <div class="total-price">$0</div>
+                    </div>
+                    <button type="button" class="btn-buy">Buy Now</button>
+                    <i class='bx bx-x' id="cart-close"></i>
+                </div>
+            </div>
+        </header>
+
+        <section class="section hero has-bg-image" id="home" aria-label="home"
+             style="background-image: url('Image/banner.jpg')">
+            <div class="container">
+
+                <h1 class="h1 hero-title">
+                <span class="span">Find Your</span> Car
+                </h1>
+                <a href="#" class="btn">Discover Now</a>
+            </div>
+        </section>
+
+        <section>
+            <div class="imageUpload">
+               <input type="file" class="inp" onchange="getImageData(event)" multiple />
+               <button onclick="selectImage()" class="selectImage">Select Images</button>
+               <div class="metaData"></div>
+               <div class="progressBar">
+               <div class="progress"></div>
+               </div>
+               <button onclick="uploadImage()" class="upload">Click For Upload</button>
+               <span class="completeMsg"></span>
+               <span class="loading"></span>
+               <div class="images"></div>
+            </div>
+            <script src="firebase/firebase.js"></script>
+            <script src="firebase/firebasestorage.js"></script>
+        </section>
+
+        <section id="cars" aria-label="cars">
+            <div class="container-fluid">
+                <div class="container">
+
+                    <div class="search">
+                        <h1>Car Collections</h1>
+                        <input type="text" name="" id="find" placeholder="search here...." onkeyup="search()">
+                    </div>
+                    <div class="product-list">
+
+                        <div class="product">
+                            <img src="Image/1.png" alt="" class="product-img" height="130">
+                            <h3>Hyundai</h3>
+                            <h4>$10000</h4>
+                        </div>
+
+                        <div class="product">
+                            <img src="Image/2.png" alt="" class="product-img" height="130">
+                            <h3>Audi</h3>
+                            <h4>$10500</h4>
+                        </div>
+
+                        <div class="product">
+                            <img src="Image/3.png" alt="" class="product-img" height="130">
+                            <h3>Renault</h3>
+                            <h4>$13000</h4>
+                        </div>
+
+                        <div class="product">
+                            <img src="Image/5.png" alt="" class="product-img" height="130">
+                            <h3>Toyota</h3>
+                            <h4>$12000</h4>
+                        </div>
+
+                        <div class="product">
+                            <img src="Image/6.png" alt="" class="product-img" height="130">
+                            <h3>NissaN</h3>
+                            <h4>$11900</h4>
+                        </div>
+
+                        <div class="product">
+                            <img src="Image/7.png" alt="" class="product-img" height="130">
+                            <h3>Citroen</h3>
+                            <h4>$11500</h4>
+                        </div>
+
+                        <div class="product">
+                            <img src="Image/8.png" alt="" class="product-img" height="130">
+                            <h3>Ford</h3>
+                            <h4>$11700</h4>
+                        </div>
+
+                        <div class="product">
+                            <img src="Image/9.png" alt="" class="product-img" height="130">
+                            <h3>Honda</h3>
+                            <h4>$15000</h4>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="shop container" id="buy" aria-label="buy">
+            <h2 class="section-title">Buy Now</h2>
+            <div class="shop-content">
+
+                <div class="product-box">
+                    <img src="Image/1.png" alt="" class="product-img">
+                    <h2 class="product-title">Model 1</h2>
+                    <span class="product-price">$10000</span>
+                    <i class='bx bx-shopping-bag add-cart'></i>
+                </div>
+
+                <div class="product-box">
+                    <img src="Image/2.png" alt="" class="product-img">
+                    <h2 class="product-title">Model 2</h2>
+                    <span class="product-price">$10500</span>
+                    <i class='bx bx-shopping-bag add-cart'></i>
+                </div>
+
+                <div class="product-box">
+                    <img src="Image/3.png" alt="" class="product-img">
+                    <h2 class="product-title">Model 3</h2>
+                    <span class="product-price">$13000</span>
+                    <i class='bx bx-shopping-bag add-cart'></i>
+                </div>
+
+                <div class="product-box">
+                    <img src="Image/4.png" alt="" class="product-img">
+                    <h2 class="product-title">Model 4</h2>
+                    <span class="product-price">$11000</span>
+                    <i class='bx bx-shopping-bag add-cart'></i>
+                </div>
+
+                <div class="product-box">
+                    <img src="Image/5.png" alt="" class="product-img">
+                    <h2 class="product-title">Model 5</h2>
+                    <span class="product-price">$12000</span>
+                    <i class='bx bx-shopping-bag add-cart'></i>
+                </div>
+
+                <div class="product-box">
+                    <img src="Image/6.png" alt="" class="product-img">
+                    <h2 class="product-title">Model 6</h2>
+                    <span class="product-price">$11900</span>
+                    <i class='bx bx-shopping-bag add-cart'></i>
+                </div>
+
+                <div class="product-box">
+                    <img src="Image/7.png" alt="" class="product-img">
+                    <h2 class="product-title">Model 7</h2>
+                    <span class="product-price">$12500</span>
+                    <i class='bx bx-shopping-bag add-cart'></i>
+                </div>
+
+                <div class="product-box">
+                    <img src="Image/8.png" alt="" class="product-img">
+                    <h2 class="product-title">Model 8</h2>
+                    <span class="product-price">$11700</span>
+                    <i class='bx bx-shopping-bag add-cart'></i>
+                </div>
+
+            </div>
+        </section> 
+
+        <footer class="footer">
+                <div class="container">
+                    <div class="footer-content">
+                        <div class="footer-section about">
+                            <h2>About Us</h2>
+                            <p>
+                                A car is a vehicle that has wheels, carries a small number of passengers, and is moved by an engine or a motor. Cars are also called automobiles or motor vehicles.
+                            </p>
+                        </div>
+                        <div class="footer-section links">
+                            <ul>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#shop">Shop</a></li>
+                                <li><a href="#category">Category</a></li>
+                                <li><a href="#contact">Contact</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-section contact">
+                            <h2>Contact Us</h2>
+                            <p>Email: sktuhin123@gmail.com</p>
+                            <p>Phone: 01700-000000</p>
+                        </div>
+                    </div>
+                </div>
+        </footer>
+        <script src="main.js"></script>
+
+    </body>
+</html>
